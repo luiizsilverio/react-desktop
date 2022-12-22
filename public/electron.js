@@ -1,6 +1,8 @@
 const { app, BrowserWindow, Notification } = require("electron");
 const path = require("path");
 
+const isDev = require("electron-is-dev");
+
 let mainWindow = null;
 
 function createWindow() {
@@ -11,7 +13,12 @@ function createWindow() {
     //   preload: path.join(__dirname, "preloader.js")
     // }
 	});
-  mainWindow.loadURL("http://localhost:3000");
+
+  if (isDev) {
+    mainWindow.loadURL("http://localhost:3000");
+  } else {
+    mainWindow.loadURL(`file://${path.join(__dirname, "..", "build", "index.html")}`);
+  }
 }
 
 app.whenReady().then(() => {
